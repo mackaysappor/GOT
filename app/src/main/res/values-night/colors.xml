@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="other">#F5F5F8</color>
+
+    <!-- App Bar & Nav Bar Colors (Light Mode) -->
+    <color name="app_color">#273043</color>
+    <color name="navbar_color">#ffffff</color>
+
+    <!-- Background Colors (Light Mode) -->
+    <color name="card_bg">#b69193</color>
+    <color name="outline_color">#b69193</color>
+    <color name="fragment_bg_color">#F5F5F8</color>
+    <color name="tab_layout_color">#F5F5F8</color>
+    <color name="image_bg_color">#ffffff</color>
+
+    <!-- Text & Icons Colors (Light Mode) -->
+    <color name="text_color">#000000</color>
+    <color name="icon_color">#273043</color>
+</resources>

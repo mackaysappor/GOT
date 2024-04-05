@@ -1,0 +1,41 @@
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/drawable/ic_avatar.xml" value="0.1485" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/drawable/ic_baseline_beenhere_24.xml" value="0.184" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/drawable/ic_books.xml" value="0.1485" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/drawable/ic_home.xml" value="0.1485" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/drawable/ic_house_fill.xml" value="0.1485" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/drawable/ic_search.xml" value="0.1485" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/activity_house.xml" value="0.1" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/books_layout.xml" value="0.264" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/character_layout.xml" value="0.264" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_blank.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_books.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_character.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_house.xml" value="0.2359375" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page1.xml" value="0.2359375" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page2.xml" value="0.27355072463768115" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page3.xml" value="0.12158054711246201" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page4.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page5.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page6.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page7.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page8.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/fragment_houses_page9.xml" value="0.12158054711246201" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/layout/house_layout.xml" value="0.25" />
+        <entry key="..\:/Users/macka/AndroidStudioProjects/GOT/app/src/main/res/menu/bottom_nav_bar.xml" value="0.1875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
