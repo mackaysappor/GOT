@@ -1,11 +1,15 @@
 package com.example.got.fragments
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.got.R
@@ -46,7 +50,9 @@ class BooksFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         getBookData { books ->
-            bookAdapter = BookAdapter(books)
+            bookAdapter = BookAdapter(books) {
+                clickedItem -> showItemDetails(clickedItem)
+            }
             booksRecyclerView.adapter = bookAdapter
             booksRecyclerView.layoutManager = LinearLayoutManager(context)
         }
@@ -83,6 +89,43 @@ class BooksFragment : Fragment() {
                 Log.d("BooksFragment", "onFailure: "+t.message)
             }
         })
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun showItemDetails(book: Books) {
+        val released = "Released"
+        val pages = "Number of Pages"
+        val publisher = "Publisher"
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.detailed_list_item_layout)
+
+        val itemImageView = dialog.findViewById<ImageView>(R.id.item_imageview)
+        val titleNameTextView = dialog.findViewById<TextView>(R.id.item_nameview)
+        val itemDetailTextView = dialog.findViewById<TextView>(R.id.item_detail1)
+        val itemDetailTitleTextView1 = dialog.findViewById<TextView>(R.id.item_detail_title1)
+        val itemDetailTitleTextView2 = dialog.findViewById<TextView>(R.id.item_detail_title2)
+        val itemDetailTitleTextView3 = dialog.findViewById<TextView>(R.id.item_detail_title3)
+        val itemDetailValueTextView1 = dialog.findViewById<TextView>(R.id.item_detail_value1)
+        val itemDetailValueTextView2 = dialog.findViewById<TextView>(R.id.item_detail_value2)
+        val itemDetailValueTextView3 = dialog.findViewById<TextView>(R.id.item_detail_value3)
+
+        itemImageView.setImageDrawable(itemImageView.context.getDrawable(R.drawable.book))
+        titleNameTextView.text = book.name
+        itemDetailTextView.text = book.authors[0]
+        itemDetailTitleTextView1.text = released
+        itemDetailTitleTextView2.text = pages
+        itemDetailTitleTextView3.text = publisher
+        itemDetailValueTextView1.text = book.released
+        itemDetailValueTextView2.text = book.numberOfPages
+        itemDetailValueTextView3.text = book.publisher
+
+        // Close the dialog when the close button is clicked
+        val closeButton = dialog.findViewById<TextView>(R.id.close_button)
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     companion object {

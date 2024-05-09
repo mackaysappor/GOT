@@ -1,5 +1,6 @@
 package com.example.got.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,21 +31,24 @@ class FeaturedCharacterAdapter(private val featdXterList: List<Characters>):
         return featdXterList.size
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var characters = featdXterList[position]
+        val characters = featdXterList[position]
         if (characters.name == "")
         {
-            if (characters.aliases[0] == "")
-            {
-                holder.characterName.text = "No Name"
-            }
-            else
-                holder.characterName.text = characters.aliases[0]
+            holder.characterName.text = characters.aliases[0].ifEmpty { "No Name" }
         }
         else
         {
             holder.characterName.text = characters.name
         }
-        holder.characterImg.setImageDrawable(holder.characterImg.context.getDrawable(R.drawable.royal_woman))
+        if (characters.gender == "Male")
+        {
+            holder.characterImg.setImageDrawable(holder.characterImg.context.getDrawable(R.drawable.character_male))
+        }
+        else if(characters.gender == "Female")
+        {
+            holder.characterImg.setImageDrawable(holder.characterImg.context.getDrawable(R.drawable.character_female))
+        }
     }
 }

@@ -22,10 +22,10 @@
 
             <ImageView
                 android:id="@+id/featuredCharacterImage"
-                android:src="@drawable/royal_woman"
                 android:scaleType="fitCenter"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/image_desc" />
         </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textAlignment="center"
-        android:hint="Character Name"
+        android:hint="@string/name"
         android:textSize="15sp" />
 
 </LinearLayout>

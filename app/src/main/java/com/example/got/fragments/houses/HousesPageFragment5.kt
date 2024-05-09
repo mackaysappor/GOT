@@ -1,17 +1,23 @@
 package com.example.got.fragments.houses
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.got.R
 import com.example.got.`interface`.ApiInterface
 import com.example.got.adapter.HouseAdapter
 import com.example.got.models.House
+import com.example.got.utils.Common
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +41,8 @@ class HousesPageFragment5 : Fragment() {
 
     private lateinit var houseRecyclerView: RecyclerView
     private lateinit var houseAdapter: HouseAdapter
+    private lateinit var common: Common
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +51,13 @@ class HousesPageFragment5 : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         getHouseData {houses ->
-            houseAdapter = HouseAdapter(houses)
+            houseAdapter = HouseAdapter(houses){
+                    clickedItem -> showItemDetails(clickedItem)
+            }
             houseRecyclerView.adapter = houseAdapter
             houseRecyclerView.layoutManager = GridLayoutManager(context, 2)
         }
+        common = Common()
     }
 
     override fun onCreateView(
@@ -81,6 +92,89 @@ class HousesPageFragment5 : Fragment() {
                 // Optionally handle failure here
             }
         })
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun updateDisplay(house: House, characterNameList: Map<String, String>) {
+        val currentLord = "Current Lord"
+        val heir = "Heir"
+        val overlord = "Overlord"
+        val region = "Region: " + house.region
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.detailed_list_item_layout)
+
+        val itemImageView = dialog.findViewById<ImageView>(R.id.item_imageview)
+        val titleNameTextView = dialog.findViewById<TextView>(R.id.item_nameview)
+        val itemDetailTextView = dialog.findViewById<TextView>(R.id.item_detail1)
+        val itemDetailTitleTextView1 = dialog.findViewById<TextView>(R.id.item_detail_title1)
+        val itemDetailTitleTextView2 = dialog.findViewById<TextView>(R.id.item_detail_title2)
+        val itemDetailTitleTextView3 = dialog.findViewById<TextView>(R.id.item_detail_title3)
+        val itemDetailValueTextView1 = dialog.findViewById<TextView>(R.id.item_detail_value1)
+        val itemDetailValueTextView2 = dialog.findViewById<TextView>(R.id.item_detail_value2)
+        val itemDetailValueTextView3 = dialog.findViewById<TextView>(R.id.item_detail_value3)
+
+        Log.d("HouseFragment", "Character Names: $characterNameList")
+
+        common.setImage(itemImageView,house.name)
+        titleNameTextView.text = house.name
+        itemDetailTextView.text = region
+        itemDetailTitleTextView1.text = currentLord
+        itemDetailTitleTextView2.text = heir
+        itemDetailTitleTextView3.text = overlord
+        itemDetailValueTextView1.text = characterNameList["Current Lord"] ?: "None"
+        itemDetailValueTextView2.text = characterNameList["Heir"] ?: "None"
+        itemDetailValueTextView3.text = characterNameList["Overlord"] ?: "None"
+
+        // Close the dialog when the close button is clicked
+        val closeButton = dialog.findViewById<TextView>(R.id.close_button)
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showItemDetails(house: House){
+        val characterNames = mutableMapOf<String, String>()
+        val currentLord = house.currentLord
+        val heir = house.heir
+        val overlord = house.overlord
+
+        val totalRequests = listOf(currentLord, heir, overlord).count(){it.isNotEmpty()}
+        var completedRequests = 0
+
+        val onCompletedRequest: () -> Unit = {
+            completedRequests++
+            if (completedRequests == totalRequests) {
+                updateDisplay(house, characterNames) // All requests are done
+            }
+        }
+
+        val handleRequest = { title: String, url: String? ->
+            if (url != null) {
+                val path = common.getPath(url)
+                if (path != null) {
+                    common.getResponseData(path) { responseBody, error ->
+                        if (error != null) {
+                            Log.e("HouseFragment", "Error fetching data for $title: $error")
+                        } else {
+                            if (responseBody != null) {
+                                val response = JSONObject(responseBody)
+                                val name = response.getString("name")
+                                characterNames[title] = name // Store the name in the map
+                            }
+                        }
+                        onCompletedRequest() // Always call onCompletedRequest after processing
+                    }
+                }
+            } else {
+                onCompletedRequest() // If URL is null, still count as completed
+            }
+        }
+
+        handleRequest("Current Lord", currentLord)
+        handleRequest("Heir", heir)
+        handleRequest("Overlord", overlord)
     }
 
     companion object {

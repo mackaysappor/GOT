@@ -8,8 +8,7 @@
     android:layout_marginTop="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:layout_marginBottom="5dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginBottom="5dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
@@ -23,7 +22,6 @@
             android:id="@+id/character_image_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/male_image"
             android:scaleType="fitXY"
             tools:ignore="ContentDescription" />
 
@@ -36,8 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
-        android:layout_toRightOf="@+id/card_view"
-        android:hint="Name" />
+        android:layout_toEndOf="@+id/card_view"
+        android:hint="@string/name" />
 
     <TextView
         android:id="@+id/txt_character_title_alias"
@@ -46,6 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_character_name"
         android:layout_marginStart="15dp"
-        android:layout_toRightOf="@+id/card_view"/>
+        android:layout_toEndOf="@+id/card_view"/>
 
 </RelativeLayout>

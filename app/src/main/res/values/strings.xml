@@ -9,4 +9,13 @@
     <string name="characters">Characters</string>
     <string name="viewpager_circle_indicator">viewpager_circle_indicator.xml</string>
     <string name="got">GOT</string>
+    <string name="title">Title</string>
+    <string name="title_value">Title Value</string>
+    <string name="image_desc">Image</string>
+    <string name="name_title">GOT Name</string>
+    <string name="captions">Captions</string>
+    <string name="x">X</string>
+    <string name="name">Name</string>
+    <string name="author">Author</string>
+
 </resources>

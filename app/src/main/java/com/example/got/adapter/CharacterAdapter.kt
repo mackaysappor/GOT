@@ -1,5 +1,6 @@
 package com.example.got.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.got.R
 import com.example.got.models.Characters
 
-class CharacterAdapter(private val charactersList: List<Characters>):
+class CharacterAdapter(private val charactersList: List<Characters>, private val onItemClick: (Characters) -> Unit):
     RecyclerView.Adapter<CharacterAdapter.ViewHolder>() {
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
         var characterName: TextView
         var characterTitle: TextView
         var characterImage: ImageView
@@ -21,6 +22,14 @@ class CharacterAdapter(private val charactersList: List<Characters>):
             characterName = itemView.findViewById(R.id.txt_character_name)
             characterTitle = itemView.findViewById(R.id.txt_character_title_alias)
             characterImage = itemView.findViewById(R.id.character_image_view)
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?){
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION){
+                onItemClick(charactersList[position])
+            }
         }
     }
 
@@ -33,40 +42,27 @@ class CharacterAdapter(private val charactersList: List<Characters>):
         return charactersList.size
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val characters = charactersList[position]
         //holder.characterName.text = characters.name
 
         if (characters.name == "")
         {
-            if (characters.aliases[0] == "")
-            {
-                holder.characterName.text = "No Name"
-            }
-            else
-                holder.characterName.text = characters.aliases[0]
+            holder.characterName.text = characters.aliases[0].ifEmpty { "No Name" }
         }
         else
         {
             holder.characterName.text = characters.name
         }
 
-        /*if (characters.titles[0] == "")
-        {
-            holder.characterTitle.text = characters.aliases[0]
-        }
-        else
-        {
-            holder.characterTitle.text = characters.titles[0]
-        }*/
-
         if (characters.gender == "Male")
         {
-            holder.characterImage.setImageDrawable(holder.characterImage.context.getDrawable(R.drawable.male_image))
+            holder.characterImage.setImageDrawable(holder.characterImage.context.getDrawable(R.drawable.character_male))
         }
         else if(characters.gender == "Female")
         {
-            holder.characterImage.setImageDrawable(holder.characterImage.context.getDrawable(R.drawable.regular_woman))
+            holder.characterImage.setImageDrawable(holder.characterImage.context.getDrawable(R.drawable.character_female))
         }
     }
 }

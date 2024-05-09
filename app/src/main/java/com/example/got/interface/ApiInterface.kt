@@ -3,8 +3,10 @@ package com.example.got.`interface`
 import com.example.got.models.Books
 import com.example.got.models.Characters
 import com.example.got.models.House
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Url
 
 interface ApiInterface{
 
@@ -40,4 +42,7 @@ interface ApiInterface{
 
     @GET("houses?page=9&pageSize=50")
     fun getHousesPage9(): Call<List<House>>
+
+    @GET()
+    fun getData(@Url url: String): Call<ResponseBody>
 }

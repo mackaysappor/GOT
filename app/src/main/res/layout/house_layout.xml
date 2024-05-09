@@ -27,14 +27,14 @@
                 android:layout_height="200dp"
                 android:layout_margin="10dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/generic_house" />
+                android:contentDescription="@string/image_desc" />
 
             <TextView
                 android:id="@+id/house_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="8dp"
-                android:hint="HOUSE NAME"
+                android:hint="@string/name"
                 android:textColor="@color/black"
                 android:textAlignment="center"
                 android:textSize="18sp" />

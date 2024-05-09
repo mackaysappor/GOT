@@ -1,17 +1,23 @@
 package com.example.got.fragments
 
+import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.got.R
 import com.example.got.`interface`.ApiInterface
 import com.example.got.adapter.CharacterAdapter
 import com.example.got.models.Characters
+import com.example.got.utils.Common
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,6 +42,7 @@ class CharacterFragment : Fragment() {
 
     private lateinit var characterRecyclerView: RecyclerView
     private lateinit var characterAdapter: CharacterAdapter
+    private lateinit var common: Common
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +51,13 @@ class CharacterFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
         getCharacterData{ characters ->
-            characterAdapter = CharacterAdapter(characters)
+            characterAdapter = CharacterAdapter(characters){
+                    clickedItem -> showItemDetails(clickedItem)
+            }
             characterRecyclerView.adapter = characterAdapter
             characterRecyclerView.layoutManager = LinearLayoutManager(context)
         }
+        common = Common()
     }
 
     override fun onCreateView(
@@ -81,6 +91,80 @@ class CharacterFragment : Fragment() {
                 Log.d("CharactersFragment", "onFailure: "+t.message)
             }
         })
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun updateDisplay(characters: Characters, bookNameList: List<String>) {
+        val culture = "Culture"
+        val gender = "Gender"
+
+        Log.d("CharacterFragment", "List of Book: $bookNameList")
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.detailed_list_item_layout)
+
+        val itemImageView = dialog.findViewById<ImageView>(R.id.item_imageview)
+        val titleNameTextView = dialog.findViewById<TextView>(R.id.item_nameview)
+        val itemDetailTextView = dialog.findViewById<TextView>(R.id.item_detail1)
+        val itemDetailTitleTextView1 = dialog.findViewById<TextView>(R.id.item_detail_title1)
+        val itemDetailTitleTextView2 = dialog.findViewById<TextView>(R.id.item_detail_title2)
+        val itemDetailTitleTextView3 = dialog.findViewById<TextView>(R.id.item_detail_title3)
+        val itemDetailValueTextView1 = dialog.findViewById<TextView>(R.id.item_detail_value1)
+        val itemDetailValueTextView2 = dialog.findViewById<TextView>(R.id.item_detail_value2)
+        val itemDetailValueTextView3 = dialog.findViewById<TextView>(R.id.item_detail_value3)
+
+        if (characters.gender == "Male"){
+            itemImageView.setImageDrawable(itemImageView.context.getDrawable(R.drawable.character_male))
+        }
+        else itemImageView.setImageDrawable(itemImageView.context.getDrawable(R.drawable.character_female))
+
+        titleNameTextView.text = characters.name.ifBlank { characters.aliases[0] }
+        itemDetailTextView.text = "Books\n" + bookNameList.joinToString (", ")
+        itemDetailTitleTextView1.text = culture
+        itemDetailTitleTextView2.text = gender
+        itemDetailTitleTextView3.text = if (characters.aliases.isEmpty()) "Aliases" else "Title"
+        itemDetailValueTextView1.text = characters.culture.ifEmpty { "Unknown" }
+        itemDetailValueTextView2.text =  characters.gender
+        itemDetailValueTextView3.text = if (characters.aliases.isEmpty()) characters.titles.firstOrNull() ?: "None" else characters.aliases[0]
+
+        // Close the dialog when the close button is clicked
+        val closeButton = dialog.findViewById<TextView>(R.id.close_button)
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showItemDetails(characters: Characters){
+        val bookNameList = mutableListOf<String>()
+        val totalRequests = characters.books.size
+        var completedRequests = 0
+
+        for (book in characters.books){
+            val path = common.getPath(book)
+            if (path != null) {
+                common.getResponseData(path){ responseBody, error ->
+                    if (error != null) {
+                        Log.e("CharacterFragment", "Error fetching data: $error")
+                    } else {
+                        if (responseBody != null){
+                            val response = JSONObject(responseBody)
+                            val getBook = response.getString("name")
+                            Log.d("CharacterFragment", "Data fetched successfully: $getBook")
+                            bookNameList.add(getBook)
+                        } else
+                            Log.d("CharacterFragment", "Response is empty")
+                    }
+
+                    // Check if all requests have completed
+                    completedRequests++
+                    if (completedRequests == totalRequests) {
+                        // All requests have completed, update UI
+                        updateDisplay(characters, bookNameList)
+                    }
+                }
+            }
+        }
     }
 
     companion object {
